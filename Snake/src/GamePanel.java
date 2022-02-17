@@ -28,35 +28,21 @@ public class GamePanel extends JPanel implements ActionListener {
 
     JButton classicButton, speedButton, doubleButton;
 
-    /*
-    GamePanel(){
-        random = new Random();
-        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        this.setBackground(Color.BLACK);
-        this.setFocusable(true);
-        this.addKeyListener(new MyKeyAdapter());
-        startGame();
-    }
-
-     */
 
     GamePanel(){
         classicButton = new JButton();
-        //classicButton.setBounds(200,100,100,50);
         classicButton.setText("Classic Snake");
         classicButton.setFocusable(false);
         classicButton.addActionListener(this);
         this.add(classicButton);
 
         speedButton = new JButton();
-        //speedButton.setBounds(200,300,100,50);
         speedButton.setText("Speed Snake");
         speedButton.setFocusable(false);
         speedButton.addActionListener(this);
         this.add(speedButton);
 
         doubleButton = new JButton();
-        //doubleButton.setBounds(200,500,100,50);
         doubleButton.setText("Double Snake");
         doubleButton.setFocusable(false);
         doubleButton.addActionListener(this);
@@ -67,7 +53,6 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
-        //startGame();
     }
 
     public void startGame(){
@@ -230,6 +215,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 gameMode = 3;
 
             }
+
             this.remove(classicButton);
             this.remove(speedButton);
             this.remove(doubleButton);

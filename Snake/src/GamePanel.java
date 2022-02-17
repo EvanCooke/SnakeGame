@@ -70,6 +70,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void draw(Graphics g){
         if(running) {
+
             // draw columns
             for (int i = 0; i < SCREEN_WIDTH / UNIT_SIZE; i++) {
                 g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT - (3 * UNIT_SIZE));
@@ -108,7 +109,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void spawnApple(){ // newApple in tutorial
         appleX = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
-        appleY = random.nextInt((SCREEN_HEIGHT-(2*UNIT_SIZE)) / UNIT_SIZE) * UNIT_SIZE;
+        appleY = random.nextInt((SCREEN_HEIGHT - (2*UNIT_SIZE)) / UNIT_SIZE) * UNIT_SIZE;
 
         // prevent apple from spawning on snake
         for(int i = 0; i < bodyParts; i++){
@@ -178,7 +179,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         // check if head touches bottom border
-        if(y[0] > SCREEN_HEIGHT - UNIT_SIZE){
+        if(y[0] > SCREEN_HEIGHT - (UNIT_SIZE * 4)){
             running = false;
         }
 

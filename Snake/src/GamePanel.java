@@ -9,12 +9,13 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 800;
     static final int SCREEN_HEIGHT = 600;
     static final int UNIT_SIZE = 25;
-    static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
+    static final int GAME_UNITS = (SCREEN_WIDTH * (SCREEN_HEIGHT - (2*UNIT_SIZE))) / UNIT_SIZE;
 
     static int DELAY = 75; // higher number = slower game and vice versa
 
     final int[] x = new int[GAME_UNITS]; // holds all x coordinates of snake
-    final int[] y = new int[GAME_UNITS]; // holds all y coordinates of snake
+    int[] y = new int[GAME_UNITS]; // holds all y coordinates of snake
+
 
     int bodyParts = 6; // starting body count for snake
     int applesEaten = 0;
@@ -30,7 +31,6 @@ public class GamePanel extends JPanel implements ActionListener {
 
 
     GamePanel(){
-
         classicButton = new JButton();
         classicButton.setText("Classic Snake");
         classicButton.setFocusable(false);
@@ -61,7 +61,6 @@ public class GamePanel extends JPanel implements ActionListener {
         running = true;
         timer = new Timer(DELAY, this);
         timer.start();
-
     }
 
     public void paintComponent(Graphics g){
@@ -70,14 +69,15 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void draw(Graphics g){
-
         if(running) {
-            // only works for square to horizontally stretched rectangles.
-            // Need two separate loops (i think?) if screen can be resized to either
-            // horizontally stretched or vertically stretched
+            // draw columns
             for (int i = 0; i < SCREEN_WIDTH / UNIT_SIZE; i++) {
-                g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT); // draw grid column lines
-                g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE); // draw grid row lines
+                g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT - (3 * UNIT_SIZE));
+            }
+
+            // draw rows
+            for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
+                g.drawLine(0, (i-2) * UNIT_SIZE, SCREEN_WIDTH, (i-2) * UNIT_SIZE);
             }
 
             g.setColor(Color.red);
@@ -98,7 +98,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 g.setColor(Color.red);
                 g.setFont(new Font("Arial", Font.BOLD, 40));
                 FontMetrics metrics = getFontMetrics(g.getFont());
-                g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2, g.getFont().getSize());
+                g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2, SCREEN_HEIGHT - UNIT_SIZE);
             }
         }
         else{
@@ -108,7 +108,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void spawnApple(){ // newApple in tutorial
         appleX = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
-        appleY = random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE;
+        appleY = random.nextInt((SCREEN_HEIGHT-(2*UNIT_SIZE)) / UNIT_SIZE) * UNIT_SIZE;
 
         // prevent apple from spawning on snake
         for(int i = 0; i < bodyParts; i++){
@@ -173,7 +173,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         // check if head touches top border
-        if(y[0] < 0){
+        if(y[0] < 0 ){
             running = false;
         }
 

@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements ActionListener {
     int appleX, appleY; // coordinates of apple
     char direction = 'R'; // start snake going right
     boolean running = false;
-    int gameMode; // 1 = classic, 2 = speed, 3 = double
+    int gameMode = 0; // 1 = classic, 2 = speed, 3 = double
 
     Timer timer;
     Random random;
@@ -30,6 +30,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
 
     GamePanel(){
+
         classicButton = new JButton();
         classicButton.setText("Classic Snake");
         classicButton.setFocusable(false);
@@ -93,10 +94,12 @@ public class GamePanel extends JPanel implements ActionListener {
             }
 
             // display score
-            g.setColor(Color.red);
-            g.setFont(new Font("Arial", Font.BOLD, 40));
-            FontMetrics metrics = getFontMetrics(g.getFont());
-            g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten))/2 , g.getFont().getSize());
+            if(gameMode != 0) {
+                g.setColor(Color.red);
+                g.setFont(new Font("Arial", Font.BOLD, 40));
+                FontMetrics metrics = getFontMetrics(g.getFont());
+                g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score: " + applesEaten)) / 2, g.getFont().getSize());
+            }
         }
         else{
             gameOver(g);
@@ -185,17 +188,20 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void gameOver(Graphics g){
-        // Game over text
-        g.setColor(Color.red);
-        g.setFont(new Font("Arial", Font.BOLD, 75));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        g.drawString("Game Over!", (SCREEN_WIDTH - metrics.stringWidth("Game Over!"))/2 , SCREEN_HEIGHT/2); // place string in center of screen
 
-        // display score
-        g.setColor(Color.red);
-        g.setFont(new Font("Arial", Font.BOLD, 40));
-        FontMetrics metrics2 = getFontMetrics(g.getFont());
-        g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics2.stringWidth("Score: " + applesEaten))/2 , g.getFont().getSize());
+        // Game over text
+        if(gameMode != 0) {
+            g.setColor(Color.red);
+            g.setFont(new Font("Arial", Font.BOLD, 75));
+            FontMetrics metrics = getFontMetrics(g.getFont());
+            g.drawString("Game Over!", (SCREEN_WIDTH - metrics.stringWidth("Game Over!")) / 2, SCREEN_HEIGHT / 2); // place string in center of screen
+
+            // display score
+            g.setColor(Color.red);
+            g.setFont(new Font("Arial", Font.BOLD, 40));
+            FontMetrics metrics2 = getFontMetrics(g.getFont());
+            g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics2.stringWidth("Score: " + applesEaten)) / 2, g.getFont().getSize());
+        }
     }
 
     @Override

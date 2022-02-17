@@ -87,10 +87,10 @@ public class GamePanel extends JPanel implements ActionListener {
             for (int i = 0; i < bodyParts; i++) {
                 if (i == 0) {
                     g.setColor(Color.green);
-                    g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+                    g.fillRect(x[i] + 3, y[i] + 3, UNIT_SIZE - 3, UNIT_SIZE - 3);
                 } else {
-                    g.setColor(new Color(45, 180, 0));
-                    g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+                    g.setColor(new Color(77, 121, 60));
+                    g.fillRect(x[i] + 3, y[i] + 3, UNIT_SIZE - 3, UNIT_SIZE - 3);
                 }
             }
 

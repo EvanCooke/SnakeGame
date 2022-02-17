@@ -13,8 +13,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
     static int DELAY = 75; // higher number = slower game and vice versa
 
-    final int x[] = new int[GAME_UNITS]; // holds all x coordinates of snake
-    final int y[] = new int[GAME_UNITS]; // holds all y coordinates of snake
+    final int[] x = new int[GAME_UNITS]; // holds all x coordinates of snake
+    final int[] y = new int[GAME_UNITS]; // holds all y coordinates of snake
 
     int bodyParts = 6; // starting body count for snake
     int applesEaten = 0;
@@ -119,8 +119,8 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void spawnApple(){ // newApple in tutorial
-        appleX = random.nextInt((int)(SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE;
-        appleY = random.nextInt((int)(SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE;
+        appleX = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
+        appleY = random.nextInt(SCREEN_HEIGHT / UNIT_SIZE) * UNIT_SIZE;
 
         // prevent apple from spawning on snake
         for(int i = 0; i < bodyParts; i++){
@@ -150,7 +150,7 @@ public class GamePanel extends JPanel implements ActionListener {
             case 'R': // move right
                 x[0] = x[0] + UNIT_SIZE;
                 break;
-        };
+        }
 
     }
 
@@ -222,25 +222,18 @@ public class GamePanel extends JPanel implements ActionListener {
         }else{
             if(e.getSource() == classicButton){
                 gameMode = 1;
-                this.remove(classicButton);
-                this.remove(speedButton);
-                this.remove(doubleButton);
-                startGame();
             }
             if(e.getSource() == speedButton){
                 gameMode = 2;
-                this.remove(classicButton);
-                this.remove(speedButton);
-                this.remove(doubleButton);
-                startGame();
             }
             if(e.getSource() == doubleButton){
                 gameMode = 3;
-                this.remove(classicButton);
-                this.remove(speedButton);
-                this.remove(doubleButton);
-                startGame();
+
             }
+            this.remove(classicButton);
+            this.remove(speedButton);
+            this.remove(doubleButton);
+            startGame();
         }
         repaint();
     }

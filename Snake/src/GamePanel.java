@@ -27,7 +27,7 @@ public class GamePanel extends JPanel implements ActionListener {
     Timer timer;
     Random random;
 
-    JButton classicButton, speedButton, doubleButton, restartButton;
+    JButton classicButton, speedButton, doubleButton;
 
 
     GamePanel(){

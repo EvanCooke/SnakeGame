@@ -6,6 +6,7 @@
 // 2. add game mode where speed of snake increases as apples get eaten ------ DONE
 // 3. ability to restart after game ends ------ DONE
 // 4. make UI look somewhat pretty
+// 5. add ai
 //
 // NO MORE, DON'T TAKE TOO LONG ON THIS, WE NEED BPM METRONOME WEBSITE
 

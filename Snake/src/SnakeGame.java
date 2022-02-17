@@ -4,7 +4,7 @@
 // future features:
 // 1. add 2 snakes to control at once
 // 2. add game mode where speed of snake increases as apples get eaten ------ DONE
-// 3. ability to restart after game ends
+// 3. ability to restart after game ends ------ DONE
 // 4. make UI look somewhat pretty
 //
 // NO MORE, DON'T TAKE TOO LONG ON THIS, WE NEED BPM METRONOME WEBSITE

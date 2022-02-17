@@ -13,7 +13,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     static int DELAY = 75; // higher number = slower game and vice versa
 
-    final int[] x = new int[GAME_UNITS]; // holds all x coordinates of snake
+    int[] x = new int[GAME_UNITS]; // holds all x coordinates of snake
     int[] y = new int[GAME_UNITS]; // holds all y coordinates of snake
 
 
@@ -27,7 +27,7 @@ public class GamePanel extends JPanel implements ActionListener {
     Timer timer;
     Random random;
 
-    JButton classicButton, speedButton, doubleButton;
+    JButton classicButton, speedButton, doubleButton, restartButton;
 
 
     GamePanel(){
@@ -109,7 +109,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void spawnApple(){ // newApple in tutorial
         appleX = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
-        appleY = random.nextInt((SCREEN_HEIGHT - (2*UNIT_SIZE)) / UNIT_SIZE) * UNIT_SIZE;
+        appleY = random.nextInt((SCREEN_HEIGHT - (3*UNIT_SIZE)) / UNIT_SIZE) * UNIT_SIZE;
 
         // prevent apple from spawning on snake
         for(int i = 0; i < bodyParts; i++){
@@ -194,14 +194,21 @@ public class GamePanel extends JPanel implements ActionListener {
         if(gameMode != 0) {
             g.setColor(Color.red);
             g.setFont(new Font("Arial", Font.BOLD, 75));
-            FontMetrics metrics = getFontMetrics(g.getFont());
-            g.drawString("Game Over!", (SCREEN_WIDTH - metrics.stringWidth("Game Over!")) / 2, SCREEN_HEIGHT / 2); // place string in center of screen
+            FontMetrics metrics1 = getFontMetrics(g.getFont());
+            g.drawString("Game Over!", (SCREEN_WIDTH - metrics1.stringWidth("Game Over!")) / 2, SCREEN_HEIGHT / 2); // place string in center of screen
 
             // display score
             g.setColor(Color.red);
             g.setFont(new Font("Arial", Font.BOLD, 40));
             FontMetrics metrics2 = getFontMetrics(g.getFont());
-            g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics2.stringWidth("Score: " + applesEaten)) / 2, g.getFont().getSize());
+            g.drawString("Press Space to Restart", (SCREEN_WIDTH - metrics2.stringWidth("Press Space to Restart")) / 2, SCREEN_HEIGHT - (UNIT_SIZE * 5));
+
+            // display score
+            g.setColor(Color.red);
+            g.setFont(new Font("Arial", Font.BOLD, 40));
+            FontMetrics metrics3 = getFontMetrics(g.getFont());
+            g.drawString("Score: " + applesEaten, (SCREEN_WIDTH - metrics3.stringWidth("Score: " + applesEaten)) / 2, SCREEN_HEIGHT - UNIT_SIZE);
+
         }
     }
 
@@ -231,6 +238,16 @@ public class GamePanel extends JPanel implements ActionListener {
         repaint();
     }
 
+    public void restartGame(){
+
+        x = new int[GAME_UNITS]; // holds all x coordinates of snake
+        y = new int[GAME_UNITS]; // holds all y coordinates of snake
+        bodyParts = 6; // starting body count for snake
+        applesEaten = 0;
+        direction = 'R';
+        DELAY = 75;
+        startGame();
+    }
 
     public class MyKeyAdapter extends KeyAdapter {
         @Override
@@ -256,6 +273,11 @@ public class GamePanel extends JPanel implements ActionListener {
                         direction = 'D';
                     }
                     break;
+                case KeyEvent.VK_SPACE:
+                    if(!running){
+
+                        restartGame();
+                    }
             }
         }
     }

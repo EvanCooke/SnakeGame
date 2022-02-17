@@ -10,7 +10,8 @@ public class GamePanel extends JPanel implements ActionListener {
     static final int SCREEN_HEIGHT = 600;
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE;
-    static final int DELAY = 75; // higher number = slower game and vice versa
+
+    static int DELAY = 75; // higher number = slower game and vice versa
 
     final int x[] = new int[GAME_UNITS]; // holds all x coordinates of snake
     final int y[] = new int[GAME_UNITS]; // holds all y coordinates of snake
@@ -20,10 +21,14 @@ public class GamePanel extends JPanel implements ActionListener {
     int appleX, appleY; // coordinates of apple
     char direction = 'R'; // start snake going right
     boolean running = false;
+    int gameMode; // 1 = classic, 2 = speed, 3 = double
 
     Timer timer;
     Random random;
 
+    JButton classicButton, speedButton, doubleButton;
+
+    /*
     GamePanel(){
         random = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -31,6 +36,38 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
         startGame();
+    }
+
+     */
+
+    GamePanel(){
+        classicButton = new JButton();
+        //classicButton.setBounds(200,100,100,50);
+        classicButton.setText("Classic Snake");
+        classicButton.setFocusable(false);
+        classicButton.addActionListener(this);
+        this.add(classicButton);
+
+        speedButton = new JButton();
+        //speedButton.setBounds(200,300,100,50);
+        speedButton.setText("Speed Snake");
+        speedButton.setFocusable(false);
+        speedButton.addActionListener(this);
+        this.add(speedButton);
+
+        doubleButton = new JButton();
+        //doubleButton.setBounds(200,500,100,50);
+        doubleButton.setText("Double Snake");
+        doubleButton.setFocusable(false);
+        doubleButton.addActionListener(this);
+        this.add(doubleButton);
+
+        random = new Random();
+        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        this.setBackground(Color.BLACK);
+        this.setFocusable(true);
+        this.addKeyListener(new MyKeyAdapter());
+        //startGame();
     }
 
     public void startGame(){
@@ -118,10 +155,13 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void checkApple(){
-        if((x[0] == appleX) && (y[0] == appleY)){
+        if((x[0] == appleX) && (y[0] == appleY)){ // apple is eaten
             bodyParts += 3; // += 3 as opposed to ++ causes bug where snake appears in top right corner for a moment after eating apple
             applesEaten++;
             spawnApple();
+            if(gameMode == 2){
+                timer.setDelay(DELAY -= 5);
+            }
         }
     }
 
@@ -179,9 +219,32 @@ public class GamePanel extends JPanel implements ActionListener {
             move();
             checkApple();
             checkCollisions();
+        }else{
+            if(e.getSource() == classicButton){
+                gameMode = 1;
+                this.remove(classicButton);
+                this.remove(speedButton);
+                this.remove(doubleButton);
+                startGame();
+            }
+            if(e.getSource() == speedButton){
+                gameMode = 2;
+                this.remove(classicButton);
+                this.remove(speedButton);
+                this.remove(doubleButton);
+                startGame();
+            }
+            if(e.getSource() == doubleButton){
+                gameMode = 3;
+                this.remove(classicButton);
+                this.remove(speedButton);
+                this.remove(doubleButton);
+                startGame();
+            }
         }
         repaint();
     }
+
 
     public class MyKeyAdapter extends KeyAdapter {
         @Override

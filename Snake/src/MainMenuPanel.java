@@ -1,4 +1,4 @@
-import com.sun.tools.javac.Main;
+//import com.sun.tools.javac.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,8 +43,7 @@ public class MainMenuPanel extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) { // checks for events
         if(e.getSource() == classicButton){
-            //GameFrame.setContentPane("SnakeGame");
-            MainMenuPanel
+            //GameFrame.add(new GamePanel());
         }
     }
 

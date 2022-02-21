@@ -216,6 +216,7 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
 
+        // FIRST SNAKE
         // check if head touches left border
         if (x[0] < 0) {
             running = false;
@@ -231,9 +232,47 @@ public class GamePanel extends JPanel implements ActionListener {
             running = false;
         }
 
-        // check if head touches bottom border
-        if (y[0] > SCREEN_HEIGHT - (UNIT_SIZE * 4)) {
-            running = false;
+
+
+        if(gameMode ==3) {
+            // check if second snake collides with first snake
+            for (int i = bodyParts; i > 0; i--) {
+                if ((x2[0] == x[i]) && (y2[0] == y[i])) {
+                    running = false; // game over
+                }
+            }
+
+            // check if first snake collides with second snake
+            for (int i = bodyParts2; i > 0; i--) {
+                if ((x[0] == x2[i]) && (y[0] == y2[i])) {
+                    running = false; // game over
+                }
+            }
+
+            // SECOND SNAKE
+            // check if head touches bottom border
+            if (y2[0] > SCREEN_HEIGHT - (UNIT_SIZE * 4)) {
+                running = false;
+            }
+
+            if (x2[0] < 0) {
+                running = false;
+            }
+
+            // check if head touches right border
+            if (x2[0] > SCREEN_WIDTH - UNIT_SIZE) {
+                running = false;
+            }
+
+            // check if head touches top border
+            if (y2[0] < 0) {
+                running = false;
+            }
+
+            // check if head touches bottom border
+            if (y2[0] > SCREEN_HEIGHT - (UNIT_SIZE * 4)) {
+                running = false;
+            }
         }
 
         if (!running) {

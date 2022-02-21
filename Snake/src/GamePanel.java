@@ -139,10 +139,19 @@ public class GamePanel extends JPanel implements ActionListener {
         appleX = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
         appleY = random.nextInt((SCREEN_HEIGHT - (3 * UNIT_SIZE)) / UNIT_SIZE) * UNIT_SIZE;
 
-        // prevent apple from spawning on snake
+        // prevent apple from spawning on first snake
         for (int i = 0; i < bodyParts; i++) {
             if (x[i] == appleX && y[i] == appleY) {
                 spawnApple();
+            }
+        }
+
+        // prevent apple from spawning on second snake
+        if(gameMode == 3) {
+            for (int i = 0; i < bodyParts2; i++) {
+                if (x2[i] == appleX && y2[i] == appleY) {
+                    spawnApple();
+                }
             }
         }
 
@@ -379,22 +388,22 @@ public class GamePanel extends JPanel implements ActionListener {
                     break;
 
                     // second snake
-                case KeyEvent.VK_NUMPAD4:
+                case KeyEvent.VK_A:
                     if (direction2 != 'R') {
                         direction2 = 'L';
                     }
                     break;
-                case KeyEvent.VK_NUMPAD6:
+                case KeyEvent.VK_D:
                     if (direction2 != 'L') {
                         direction2 = 'R';
                     }
                     break;
-                case KeyEvent.VK_NUMPAD8:
+                case KeyEvent.VK_W:
                     if (direction2 != 'D') {
                         direction2 = 'U';
                     }
                     break;
-                case KeyEvent.VK_NUMPAD5:
+                case KeyEvent.VK_S:
                     if (direction2 != 'U') {
                         direction2 = 'D';
                     }

@@ -22,12 +22,12 @@ public class GamePanel extends JPanel implements ActionListener {
     int[] x2 = new int[GAME_UNITS]; // holds all x coordinates of second snake
     int[] y2 = new int[GAME_UNITS]; // holds all y coordinates of second snake
 
-
     int bodyParts = 6; // starting body count for first snake
     int bodyParts2 = 6; // starting body count for second snake
     int applesEaten = 0;
     int applesEaten2 = 0;
     int appleX, appleY; // coordinates of apple
+    int appleX2, appleY2; // coordinates of seond apple
     char direction = 'R'; // start first snake going right
     char direction2 = 'L'; // start second snake going right
     boolean running = false;
@@ -70,6 +70,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void startGame() {
         spawnApple();
+        if (gameMode == 3) {
+            spawnApple2();
+        }
         running = true;
         timer = new Timer(DELAY, this);
         timer.start();
@@ -96,6 +99,10 @@ public class GamePanel extends JPanel implements ActionListener {
             g.setColor(Color.red);
             g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
 
+            if (gameMode == 3) {
+                g.fillOval(appleX2, appleY2, UNIT_SIZE, UNIT_SIZE);
+            }
+
 
             // draw first snake
             for (int i = 0; i < bodyParts; i++) {
@@ -109,9 +116,8 @@ public class GamePanel extends JPanel implements ActionListener {
             }
 
 
-
             // draw second snake
-            if(gameMode == 3){
+            if (gameMode == 3) {
                 for (int i = 0; i < bodyParts2; i++) {
                     if (i == 0) {
                         g.setColor(Color.blue);
@@ -135,6 +141,27 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+    public void spawnApple2() {
+        appleX2 = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
+        appleY2 = random.nextInt((SCREEN_HEIGHT - (3 * UNIT_SIZE)) / UNIT_SIZE) * UNIT_SIZE;
+
+        // prevent apple from spawning on first snake
+        for (int i = 0; i < bodyParts; i++) {
+            if (x[i] == appleX2 && y[i] == appleY2) {
+                spawnApple();
+            }
+        }
+
+        // prevent apple from spawning on second snake
+        if (gameMode == 3) {
+            for (int i = 0; i < bodyParts2; i++) {
+                if (x2[i] == appleX2 && y2[i] == appleY2) {
+                    spawnApple();
+                }
+            }
+        }
+    }
+
     public void spawnApple() { // newApple in tutorial
         appleX = random.nextInt(SCREEN_WIDTH / UNIT_SIZE) * UNIT_SIZE;
         appleY = random.nextInt((SCREEN_HEIGHT - (3 * UNIT_SIZE)) / UNIT_SIZE) * UNIT_SIZE;
@@ -147,7 +174,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         // prevent apple from spawning on second snake
-        if(gameMode == 3) {
+        if (gameMode == 3) {
             for (int i = 0; i < bodyParts2; i++) {
                 if (x2[i] == appleX && y2[i] == appleY) {
                     spawnApple();
@@ -162,7 +189,7 @@ public class GamePanel extends JPanel implements ActionListener {
             x[i] = x[i - 1];
             y[i] = y[i - 1];
         }
-        if(gameMode == 3){
+        if (gameMode == 3) {
             for (int i = bodyParts2; i > 0; i--) {
                 x2[i] = x2[i - 1];
                 y2[i] = y2[i - 1];
@@ -184,7 +211,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 break;
         }
 
-        if(gameMode == 3){
+        if (gameMode == 3) {
             switch (direction2) {
                 case 'U': // move up
                     y2[0] = y2[0] - UNIT_SIZE;
@@ -200,9 +227,6 @@ public class GamePanel extends JPanel implements ActionListener {
                     break;
             }
         }
-
-
-
     }
 
     public void checkApple() {
@@ -212,6 +236,34 @@ public class GamePanel extends JPanel implements ActionListener {
             spawnApple();
             if (gameMode == 2) {
                 timer.setDelay(DELAY -= 5);
+            }
+        }
+
+        // second snake
+        if (gameMode == 3) {
+            if ((x2[0] == appleX) && (y2[0] == appleY)) { // apple is eaten
+                bodyParts2 += 3; // += 3 as opposed to ++ causes bug where snake appears in top right corner for a moment after eating apple
+                applesEaten2++;
+                spawnApple();
+            }
+
+            //check second apple
+            if ((x[0] == appleX2) && (y[0] == appleY2)) { // apple is eaten
+                bodyParts += 3; // += 3 as opposed to ++ causes bug where snake appears in top right corner for a moment after eating apple
+                applesEaten++;
+                spawnApple2();
+                if (gameMode == 2) {
+                    timer.setDelay(DELAY -= 5);
+                }
+            }
+
+            // second snake
+            if (gameMode == 3) {
+                if ((x2[0] == appleX2) && (y2[0] == appleY2)) { // apple is eaten
+                    bodyParts2 += 3; // += 3 as opposed to ++ causes bug where snake appears in top right corner for a moment after eating apple
+                    applesEaten2++;
+                    spawnApple2();
+                }
             }
         }
     }
@@ -247,8 +299,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
 
-
-        if(gameMode ==3) {
+        if (gameMode == 3) {
             // check if second snake collides with first snake
             for (int i = bodyParts; i > 0; i--) {
                 if ((x2[0] == x[i]) && (y2[0] == y[i])) {
@@ -350,7 +401,7 @@ public class GamePanel extends JPanel implements ActionListener {
         direction = 'R';
         DELAY = 75;
 
-        if(gameMode == 3) {
+        if (gameMode == 3) {
             x2 = new int[GAME_UNITS]; // holds all x coordinates of second snake
             y2 = new int[GAME_UNITS]; // holds all y coordinates of second snake
             x2[0] = UNIT_SIZE * (SCREEN_WIDTH / UNIT_SIZE);
@@ -387,7 +438,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     }
                     break;
 
-                    // second snake
+                // second snake
                 case KeyEvent.VK_A:
                     if (direction2 != 'R') {
                         direction2 = 'L';
@@ -409,7 +460,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     }
                     break;
 
-                    // restart
+                // restart
                 case KeyEvent.VK_SPACE:
                     if (!running) {
                         restartGame();

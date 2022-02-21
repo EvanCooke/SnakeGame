@@ -232,6 +232,11 @@ public class GamePanel extends JPanel implements ActionListener {
             running = false;
         }
 
+        // check if head touches bottom border
+        if (y[0] > SCREEN_HEIGHT - (UNIT_SIZE * 4)) {
+            running = false;
+        }
+
 
 
         if(gameMode ==3) {
@@ -255,6 +260,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 running = false;
             }
 
+            // check if head touches left border
             if (x2[0] < 0) {
                 running = false;
             }
@@ -266,11 +272,6 @@ public class GamePanel extends JPanel implements ActionListener {
 
             // check if head touches top border
             if (y2[0] < 0) {
-                running = false;
-            }
-
-            // check if head touches bottom border
-            if (y2[0] > SCREEN_HEIGHT - (UNIT_SIZE * 4)) {
                 running = false;
             }
         }

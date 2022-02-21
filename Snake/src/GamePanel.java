@@ -16,14 +16,20 @@ public class GamePanel extends JPanel implements ActionListener {
 
     static int DELAY = 75; // higher number = slower game and vice versa
 
-    int[] x = new int[GAME_UNITS]; // holds all x coordinates of snake
-    int[] y = new int[GAME_UNITS]; // holds all y coordinates of snake
+    int[] x = new int[GAME_UNITS]; // holds all x coordinates of first snake
+    int[] y = new int[GAME_UNITS]; // holds all y coordinates of first snake
+
+    int[] x2 = new int[GAME_UNITS]; // holds all x coordinates of second snake
+    int[] y2 = new int[GAME_UNITS]; // holds all y coordinates of second snake
 
 
-    int bodyParts = 6; // starting body count for snake
+    int bodyParts = 6; // starting body count for first snake
+    int bodyParts2 = 6; // starting body count for second snake
     int applesEaten = 0;
+    int applesEaten2 = 0;
     int appleX, appleY; // coordinates of apple
-    char direction = 'R'; // start snake going right
+    char direction = 'R'; // start first snake going right
+    char direction2 = 'L'; // start second snake going right
     boolean running = false;
     int gameMode = 0; // 1 = classic, 2 = speed, 3 = double
 
@@ -34,6 +40,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
 
     GamePanel() {
+        x2[0] = UNIT_SIZE * (SCREEN_WIDTH / UNIT_SIZE);
+        y2[0] = UNIT_SIZE * (SCREEN_HEIGHT / UNIT_SIZE) - (4 * UNIT_SIZE);
+
         classicButton = new JButton();
         classicButton.setText("Classic Snake");
         classicButton.setFocusable(false);
@@ -87,6 +96,8 @@ public class GamePanel extends JPanel implements ActionListener {
             g.setColor(Color.red);
             g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
 
+
+            // draw first snake
             for (int i = 0; i < bodyParts; i++) {
                 if (i == 0) {
                     g.setColor(Color.green);
@@ -94,6 +105,21 @@ public class GamePanel extends JPanel implements ActionListener {
                 } else {
                     g.setColor(new Color(77, 121, 60));
                     g.fillRect(x[i] + 3, y[i] + 3, UNIT_SIZE - 3, UNIT_SIZE - 3);
+                }
+            }
+
+
+
+            // draw second snake
+            if(gameMode == 3){
+                for (int i = 0; i < bodyParts2; i++) {
+                    if (i == 0) {
+                        g.setColor(Color.blue);
+                        g.fillRect(x2[i] + 3, y2[i] + 3, UNIT_SIZE - 3, UNIT_SIZE - 3);
+                    } else {
+                        g.setColor(new Color(40, 72, 116));
+                        g.fillRect(x2[i] + 3, y2[i] + 3, UNIT_SIZE - 3, UNIT_SIZE - 3);
+                    }
                 }
             }
 
@@ -127,6 +153,12 @@ public class GamePanel extends JPanel implements ActionListener {
             x[i] = x[i - 1];
             y[i] = y[i - 1];
         }
+        if(gameMode == 3){
+            for (int i = bodyParts2; i > 0; i--) {
+                x2[i] = x2[i - 1];
+                y2[i] = y2[i - 1];
+            }
+        }
 
         switch (direction) {
             case 'U': // move up
@@ -142,6 +174,25 @@ public class GamePanel extends JPanel implements ActionListener {
                 x[0] = x[0] + UNIT_SIZE;
                 break;
         }
+
+        if(gameMode == 3){
+            switch (direction2) {
+                case 'U': // move up
+                    y2[0] = y2[0] - UNIT_SIZE;
+                    break;
+                case 'D': // move down
+                    y2[0] = y2[0] + UNIT_SIZE;
+                    break;
+                case 'L': // move left
+                    x2[0] = x2[0] - UNIT_SIZE;
+                    break;
+                case 'R': // move right
+                    x2[0] = x2[0] + UNIT_SIZE;
+                    break;
+            }
+        }
+
+
 
     }
 
@@ -242,12 +293,22 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void restartGame() {
 
-        x = new int[GAME_UNITS]; // holds all x coordinates of snake
-        y = new int[GAME_UNITS]; // holds all y coordinates of snake
+        x = new int[GAME_UNITS]; // holds all x coordinates of first snake
+        y = new int[GAME_UNITS]; // holds all y coordinates of first snake
+
         bodyParts = 6; // starting body count for snake
         applesEaten = 0;
         direction = 'R';
         DELAY = 75;
+
+        if(gameMode == 3) {
+            x2 = new int[GAME_UNITS]; // holds all x coordinates of second snake
+            y2 = new int[GAME_UNITS]; // holds all y coordinates of second snake
+            x2[0] = UNIT_SIZE * (SCREEN_WIDTH / UNIT_SIZE);
+            y2[0] = UNIT_SIZE * (SCREEN_HEIGHT / UNIT_SIZE) - (4 * UNIT_SIZE);
+            bodyParts2 = 6;
+        }
+
         startGame();
     }
 
@@ -255,6 +316,7 @@ public class GamePanel extends JPanel implements ActionListener {
         @Override
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {
+                // first snake
                 case KeyEvent.VK_LEFT:
                     if (direction != 'R') {
                         direction = 'L';
@@ -275,6 +337,30 @@ public class GamePanel extends JPanel implements ActionListener {
                         direction = 'D';
                     }
                     break;
+
+                    // second snake
+                case KeyEvent.VK_NUMPAD4:
+                    if (direction2 != 'R') {
+                        direction2 = 'L';
+                    }
+                    break;
+                case KeyEvent.VK_NUMPAD6:
+                    if (direction2 != 'L') {
+                        direction2 = 'R';
+                    }
+                    break;
+                case KeyEvent.VK_NUMPAD8:
+                    if (direction2 != 'D') {
+                        direction2 = 'U';
+                    }
+                    break;
+                case KeyEvent.VK_NUMPAD5:
+                    if (direction2 != 'U') {
+                        direction2 = 'D';
+                    }
+                    break;
+
+                    // restart
                 case KeyEvent.VK_SPACE:
                     if (!running) {
                         restartGame();

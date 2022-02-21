@@ -253,7 +253,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 applesEaten++;
                 spawnApple2();
                 if (gameMode == 2) {
-                    timer.setDelay(DELAY -= 5);
+                    timer.setDelay(DELAY = (DELAY / 2));
                 }
             }
 
